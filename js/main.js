@@ -4,7 +4,6 @@ const BOARD_SIZE = 14;
 const ALIENS_ROW_LENGTH = 8
 const ALIENS_ROW_COUNT = 3
 
-
 const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
@@ -13,13 +12,17 @@ const SKY = 'sky'
 const EARTH = 'earth'
 
 
+const SCORE_CLASS = 'score'
+
+
 var gBoard
 
 const gGame = {
     isOn: false,
     aliensCount: null,
     heroLives: null,
-    laserPos:null,
+    laserPos: null,
+    score: null,
 }
 
 
@@ -32,16 +35,23 @@ function onInit() {
     gBoard = createBoard()
     createHero(gBoard)
     createAliens(gBoard)
+    renderItem(SCORE_CLASS, gGame.score)
     renderBoard(gBoard)
 }
 
 function initGameParameters() {
-    gGame.aliensCount = 3// later 8*3
+    gGame.aliensCount = ALIENS_ROW_LENGTH * ALIENS_ROW_COUNT
     gGame.heroLives = 3
+    gGame.score = 0
+    gGame.laserPos = null
     gGame.isOn = true
 }
 
-
+function restart() {
+    clearInterval(gIntervalLaser)
+    clearInterval(gIntervalAliens)
+    onInit()
+}
 
 //////////////////////////////////////CREATE/////////////////////////////////////
 // Create and returns the board with aliens on top, ground at bottom
@@ -59,6 +69,7 @@ function createBoard() {
     return board
 
 }
+
 
 
 ////////////////////////////////////RENDER//////////////////////////////////////
@@ -90,8 +101,12 @@ function renderBoard(board) {
 
 
 
-
 //////////////////////////////////UPDATE////////////////////////////////////////
+
+function updateScore(value) {
+    gGame.score += value
+    renderItem(SCORE_CLASS, gGame.score)
+}
 
 
 

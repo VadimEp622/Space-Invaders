@@ -12,20 +12,22 @@ var gAliensBottomRowIdx
 var gIsAlienFreeze = true
 
 
-var gAliens = []
+var gAliens
 
 
 function createAliens(board) {
     gAliensTopRowIdx = 1
     gAliensBottomRowIdx = gAliensTopRowIdx + ALIENS_ROW_COUNT - 1
+    var aliens = []
 
     for (var i = gAliensTopRowIdx; i <= gAliensBottomRowIdx && i < board.length - 1; i++) {
         for (var j = 0; j < ALIENS_ROW_LENGTH && j < board[0].length; j++) {
             var currAlien = { pos: { i: i, j: j } }
-            gAliens.push(currAlien)
+            aliens.push(currAlien)
             gBoard[currAlien.pos.i][currAlien.pos.j].gameObject = ALIEN
         }
     }
+    gAliens = aliens
     // console.log('gAliens', gAliens)
 }
 function handleAlienHit(pos) { }
@@ -36,3 +38,11 @@ function shiftBoardDown(board, fromI, toI) { }
 // it re-renders the board every time
 // when the aliens are reaching the hero row - interval stops
 function moveAliens() { }
+
+
+
+function killAlien(alienPos, alienIdx) {
+    updateScore(10)
+    gAliens.splice(alienIdx, 1)
+    updateCell(alienPos, null)
+}

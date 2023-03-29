@@ -18,6 +18,13 @@ function renderCell(pos, value) {
     elCell.innerHTML = value
 }
 
+// recieves classStr and item to render, and renders item
+function renderItem(classStr, item) {
+    var elClass = document.querySelector(`.${classStr}`)
+    elClass.innerHTML = item
+}
+
+
 // position such as: {i: 2, j: 7}
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
