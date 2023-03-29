@@ -24,12 +24,14 @@ button:hover {
 button,
 .score,
 footer,
-h1,
-.cell {
+h1{
     font-size: var(--font-size);
     font-weight: var(--font-weight);
 }
-
+.cell{
+    font-size: 20px;
+    font-weight: var(--font-weight);
+}
 
 
 /*  */

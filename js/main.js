@@ -11,12 +11,10 @@ const LASER = '⤊'
 const SKY = 'sky'
 const EARTH = 'earth'
 
-
 const SCORE_CLASS = '.score span'
 
 
 var gBoard
-
 const gGame = {
     isOn: false,
     aliensCount: null,
@@ -25,6 +23,8 @@ const gGame = {
     score: null,
 }
 
+
+//TODO: Step4 – Let the aliens move
 
 
 
@@ -35,6 +35,7 @@ function onInit() {
     createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
     renderBoard(gBoard)
+    moveAliens()
 
     // document.querySelector(".you-win").hidden=false
     // document.querySelector(".you-lose").hidden=false
@@ -48,12 +49,14 @@ function initGameParameters() {
     gGame.isOn = true
 }
 
+
+
+
 function restart() {
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
     onInit()
 }
-
 
 function victory() {
     document.querySelector(".you-win").hidden = false
@@ -61,7 +64,6 @@ function victory() {
     clearInterval(gIntervalAliens)
     gGame.isOn = false
 }
-
 
 function gamerOver() {
     document.querySelector(".you-lose").hidden = false

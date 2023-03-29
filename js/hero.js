@@ -4,7 +4,7 @@ const LASER_SPEED = 80
 // const LASER_SPEED = 1
 
 
-var gHero //= { pos: { i: 12, j: 5 }, isShoot: false }
+var gHero
 
 var gIntervalLaser
 
@@ -12,7 +12,6 @@ var gIntervalLaser
 function createHero(board) {
     gHero = { pos: { i: 12, j: 5 }, isShoot: false }
     board[gHero.pos.i][gHero.pos.j].gameObject = HERO
-    // renderCell(gHero.pos, HERO)
 }
 
 // Handle game keys
@@ -24,21 +23,11 @@ function onKeyDown(eventKeyboard) {
     if (keyboardKey === 'ArrowRight' || keyboardKey === 'ArrowLeft') {
         const direction = (keyboardKey === 'ArrowRight') ? 1 : -1// can only be left/right
         // console.log('direction', direction)
-
         moveHero(direction)
-
-    }
-    else if (keyboardKey === ' ') {
-
+    }else if (keyboardKey === ' ') {
         shoot()
     }
 
-
-
-
-    // gHero.pos = nextPos
-    // gBoard[nextPos.i][nextPos.j].gameObject=HERO
-    // renderCell(nextPos, HERO)
 }
 
 // Move the hero right (1) or left (-1)
@@ -69,12 +58,14 @@ function shoot() {
         blinkLaser(gGame.laserPos)
         // console.log('gGame.laserPos after', gGame.laserPos)
 
+
         var currLaseredAlienIdx = getAlienIdx(gGame.laserPos)
 
         if (gGame.laserPos.i < 0) {
             cleanLaser()
         } else if (currLaseredAlienIdx >= 0) {
-            killAlien(gGame.laserPos, currLaseredAlienIdx)
+            // killAlien(gGame.laserPos, currLaseredAlienIdx)
+            handleAlienHit(gGame.laserPos)
             cleanLaser()
         }
 
