@@ -66,9 +66,13 @@ function shoot() {
         blinkLaser(gGame.laserPos)
         console.log('gGame.laserPos', gGame.laserPos)
         if (gGame.laserPos.i === 0) {
+            // console.log('hi')
+            updateCell(gGame.laserPos, null)
             clearInterval(gIntervalLaser)
             gGame.laserPos = null
+            gHero.isShoot = false
         }
+        // if(gAliens.includes(gGame.laserPos).pos) console.log('hi')
     }, LASER_SPEED)
 
 
@@ -82,7 +86,9 @@ function blinkLaser(pos) {
 
     if (gHero.pos.i !== currLaserPos.i) updateCell(currLaserPos, null)
 
+    // if (nextLaserPos.i < 0) return
     gGame.laserPos = nextLaserPos
     updateCell(nextLaserPos, LASER)
 
+    console.log('pos', pos)
 }
