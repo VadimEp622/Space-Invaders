@@ -53,6 +53,8 @@ function initGameParameters() {
 
 
 function restart() {
+    if (!document.querySelector(".you-win").hidden) document.querySelector(".you-win").hidden = true
+    if (!document.querySelector(".you-lose").hidden) document.querySelector(".you-lose").hidden = true
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
     onInit()
