@@ -20,7 +20,7 @@ function renderCell(pos, value) {
 
 // recieves classStr and item to render, and renders item
 function renderItem(classStr, item) {
-    var elClass = document.querySelector(`.${classStr}`)
+    var elClass = document.querySelector(`${classStr}`)
     elClass.innerHTML = item
 }
 
@@ -36,7 +36,7 @@ function getAlienIdx(pos) {
     for (var i = 0; i < gAliens.length; i++) {
         if (gAliens[i].pos.i === pos.i && gAliens[i].pos.j === pos.j) return i
     }
-    return null
+    return -1
 }
 
 function getElCell(pos) {

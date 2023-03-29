@@ -1,27 +1,44 @@
+:root {
+    --font-size: 25px;
+    --font-weight: bolder;
+}
+
+
 body {
     text-align: center;
     background-color: rgb(75, 79, 79);
 }
+
 button {
     padding: 5px;
     margin-bottom: 20px;
     /* border: none; */
 }
-button:hover{
-    cursor:pointer;
+
+button:hover {
+    cursor: pointer;
 }
-/* button:focus{
 
-} */
+.you-win,
+.you-lose,
+button,
+.score,
+footer,
+h1,
+.cell {
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+}
 
 
 
 /*  */
 /*  */
-.sky{
+.sky {
     background-color: rgb(43, 37, 37);
 }
-.earth{
+
+.earth {
     background-color: red;
 }
 
@@ -35,25 +52,25 @@ button:hover{
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    font-size:150%
+    /* font-size:150% */
 }
+
 .restart:hover {
     background-color: rgb(255, 255, 255);
 }
-.result {
+
+/* .result {
     color: red;
     font-size: 50px;
     margin-top: -10px;
     margin-bottom: -10px;
-}
+} */
 
 
 
 /*  */
 /*  */
-.cell{
-    font-size: 20px;
-}
+
 table {
     /*puts table in middle*/
     margin-left: auto;
@@ -62,13 +79,24 @@ table {
     border-collapse: collapse;
     background-color: gray;
 }
+
 table,
 tr,
 td {
     table-layout: fixed;
     border: 1px solid black;
-    height: 30px; 
+    height: 30px;
     width: 30px;
     padding: 5px;
 
+}
+
+/*  */
+/*  */
+.you-win {
+    color: green;
+}
+
+.you-lose {
+    color: red;
 }

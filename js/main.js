@@ -12,7 +12,7 @@ const SKY = 'sky'
 const EARTH = 'earth'
 
 
-const SCORE_CLASS = 'score'
+const SCORE_CLASS = '.score span'
 
 
 var gBoard
@@ -26,8 +26,6 @@ const gGame = {
 }
 
 
-//TODO: create cells with aliens
-//TODO: create cells with hero
 
 
 function onInit() {
@@ -37,6 +35,9 @@ function onInit() {
     createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
     renderBoard(gBoard)
+
+    // document.querySelector(".you-win").hidden=false
+    // document.querySelector(".you-lose").hidden=false
 }
 
 function initGameParameters() {
@@ -51,6 +52,22 @@ function restart() {
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
     onInit()
+}
+
+
+function victory() {
+    document.querySelector(".you-win").hidden = false
+    clearInterval(gIntervalLaser)
+    clearInterval(gIntervalAliens)
+    gGame.isOn = false
+}
+
+
+function gamerOver() {
+    document.querySelector(".you-lose").hidden = false
+    clearInterval(gIntervalLaser)
+    clearInterval(gIntervalAliens)
+    gGame.isOn = false
 }
 
 //////////////////////////////////////CREATE/////////////////////////////////////
@@ -102,7 +119,6 @@ function renderBoard(board) {
 
 
 //////////////////////////////////UPDATE////////////////////////////////////////
-
 function updateScore(value) {
     gGame.score += value
     renderItem(SCORE_CLASS, gGame.score)
@@ -110,8 +126,14 @@ function updateScore(value) {
 
 
 
-//////////////////////////////////GET_STUFF////////////////////////////////////
+//////////////////////////////////CHECK////////////////////////////////////
+function checkVictory() {
+    if (gGame.aliensCount === 0) victory()
+}
 
+function checkLoss() {
+
+}
 
 
 

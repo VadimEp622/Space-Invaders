@@ -1,6 +1,8 @@
 'use strict'
 
 const LASER_SPEED = 80
+// const LASER_SPEED = 1
+
 
 var gHero //= { pos: { i: 12, j: 5 }, isShoot: false }
 
@@ -15,7 +17,7 @@ function createHero(board) {
 
 // Handle game keys
 function onKeyDown(eventKeyboard) {
-    // console.log('eventKeyboard', eventKeyboard)
+    if (!gGame.isOn) return
     const keyboardKey = eventKeyboard.key
     console.log('keyboardKey', keyboardKey)
 
@@ -27,7 +29,7 @@ function onKeyDown(eventKeyboard) {
 
     }
     else if (keyboardKey === ' ') {
-        console.log('hi')
+
         shoot()
     }
 
@@ -71,7 +73,7 @@ function shoot() {
 
         if (gGame.laserPos.i < 0) {
             cleanLaser()
-        } else if (currLaseredAlienIdx) {
+        } else if (currLaseredAlienIdx >= 0) {
             killAlien(gGame.laserPos, currLaseredAlienIdx)
             cleanLaser()
         }
@@ -94,7 +96,7 @@ function blinkLaser(pos) {
 }
 
 
-function cleanLaser(){
+function cleanLaser() {
     clearInterval(gIntervalLaser)
     gGame.laserPos = null
     gHero.isShoot = false

@@ -45,4 +45,8 @@ function killAlien(alienPos, alienIdx) {
     updateScore(10)
     gAliens.splice(alienIdx, 1)
     updateCell(alienPos, null)
+    gGame.aliensCount--
+    checkVictory()
+    // console.log('gGame.aliensCount', gGame.aliensCount)
+    // console.log('gAliens.length', gAliens.length)
 }
