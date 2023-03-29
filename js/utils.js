@@ -25,6 +25,12 @@ function updateCell(pos, gameObject = null) {
     elCell.innerHTML = gameObject || ''
 }
 
+function getAlienIdx(pos) {
+    for (var i = 0; i < gAliens.length; i++) {
+        if (gAliens[i].pos.i === pos.i && gAliens[i].pos.j === pos.j) return i
+    }
+    return null
+}
 
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);

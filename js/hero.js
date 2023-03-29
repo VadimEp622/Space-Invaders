@@ -15,7 +15,7 @@ function createHero(board) {
 
 // Handle game keys
 function onKeyDown(eventKeyboard) {
-    console.log('eventKeyboard', eventKeyboard)
+    // console.log('eventKeyboard', eventKeyboard)
     const keyboardKey = eventKeyboard.key
     console.log('keyboardKey', keyboardKey)
 
@@ -63,32 +63,33 @@ function shoot() {
     gGame.laserPos = { i: gHero.pos.i, j: gHero.pos.j }
 
     gIntervalLaser = setInterval(() => {
+        // console.log('gGame.laserPos before', gGame.laserPos)
         blinkLaser(gGame.laserPos)
-        console.log('gGame.laserPos', gGame.laserPos)
-        if (gGame.laserPos.i === 0) {
-            // console.log('hi')
-            updateCell(gGame.laserPos, null)
+        // console.log('gGame.laserPos after', gGame.laserPos)
+        if (gGame.laserPos.i < 0) {
             clearInterval(gIntervalLaser)
             gGame.laserPos = null
             gHero.isShoot = false
+        } else {
+            // console.log('getAlien(gGame.laserPos)', getAlienIdx(gGame.laserPos))
+            var currAlienIdx = getAlienIdx(gGame.laserPos)
+            if (currAlienIdx) {
+                gAliens.splice(currAlienIdx, 1)
+            }
         }
-        // if(gAliens.includes(gGame.laserPos).pos) console.log('hi')
     }, LASER_SPEED)
 
 
-
+console.log('gAliens.length', gAliens.length)
 }
 // renders a LASER at specific cell for short time and removes it
 function blinkLaser(pos) {
-    // console.log('pos.i', pos.i)
     var currLaserPos = pos
     var nextLaserPos = { i: pos.i - 1, j: pos.j }
 
     if (gHero.pos.i !== currLaserPos.i) updateCell(currLaserPos, null)
 
-    // if (nextLaserPos.i < 0) return
     gGame.laserPos = nextLaserPos
+    if (nextLaserPos.i < 0) return//prevents updating a cell outside of board
     updateCell(nextLaserPos, LASER)
-
-    console.log('pos', pos)
 }
