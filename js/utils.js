@@ -66,3 +66,4 @@ function getNextLocation(keyboardKey) {
     // console.log('nextPosition.j', nextPosition.j)
     return nextPosition
 }
+
