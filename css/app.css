@@ -1,0 +1,70 @@
+body {
+    text-align: center;
+    background-color: rgb(75, 79, 79);
+}
+button {
+    padding: 5px;
+    margin-bottom: 20px;
+}
+button:hover{
+    cursor:pointer;
+}
+
+
+
+/*  */
+/*  */
+.sky{
+    background-color: rgb(43, 37, 37);
+}
+.earth{
+    background-color: red;
+}
+
+
+
+/*  */
+/*  */
+.restart {
+    background-color: rgb(169, 222, 222);
+    border: none;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    font-size:150%
+}
+.restart:hover {
+    background-color: rgb(255, 255, 255);
+}
+.result {
+    color: red;
+    font-size: 50px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}
+
+
+
+/*  */
+/*  */
+.cell{
+    font-size: 20px;
+}
+table {
+    /*puts table in middle*/
+    margin-left: auto;
+    margin-right: auto;
+    /**/
+    border-collapse: collapse;
+    background-color: gray;
+}
+table,
+tr,
+td {
+    table-layout: fixed;
+    border: 1px solid black;
+    height: 30px; 
+    width: 30px;
+    padding: 5px;
+
+}

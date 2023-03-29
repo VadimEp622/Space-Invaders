@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alien Shooter</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body onkeydown="onKeyDown(event)" onload="onInit()">
+
+    <h1>Alien Shooter</h1>
+
+
+    <div>
+        <button class="restart" onclick="restart()">Restart</button>
+    </div>
+
+    <!-- 
+    <button onclick="restart('EASY')">Easy</button>
+    <button onclick="restart('MEDIUM')">Medium</button>
+    <button onclick="restart('HARD')">Hard</button>
+    -->
+
+    <table class="board">
+    </table>
+
+    <script src="js/utils.js"></script>
+    <script src="js/alien.js"></script>
+    <script src="js/hero.js"></script>
+    <script src="js/main.js"></script>
+
+    <footer>
+        <p>Made by: Vlad Epov</p>
+    </footer>
+</body>
+
+</html>
