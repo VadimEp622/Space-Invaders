@@ -123,6 +123,8 @@ function blowUpNegs(cellI, cellJ) {
         }
     }
 }
+
+
 //copies mat (inorder to not interfere in main mat when doing cell by cell operations) 
 function copyMat(mat) {
     var newMat = []

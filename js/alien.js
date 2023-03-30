@@ -12,6 +12,7 @@ var gAliensTopRowIdx
 var gAliensBottomRowIdx
 
 var gIsAlienFreeze = true
+var gAliensAreMidMove = false
 
 var gAliens
 
@@ -33,18 +34,26 @@ function createAliens(board) {
 }
 
 function handleAlienHit(pos) {
+    if (gHero.isBomb) {
+        blowUpNegs(pos.i, pos.j)
+    } else {
+        updateScore(10)
+        gGame.aliensCount--
+
+        // console.log('pos Alien Hit', pos)
+        // var currHitAlienIdx = getAlienIdx(pos)
+        // console.log('gAliens.length before', gAliens.length)
+        // gAliens.splice(currHitAlienIdx, 1)
+        // console.log('gAliens.length after', gAliens.length)
+        // updateCell(pos)
+
+        killAlien(pos)
+    }
     cleanLaser()
-
-    updateScore(10)
-    gGame.aliensCount--
-
-    var currHitAlienIdx = getAlienIdx(pos)
-    console.log('gAliens.length before', gAliens.length)
-    gAliens.splice(currHitAlienIdx, 1)
-    console.log('gAliens.length after', gAliens.length)
-    updateCell(pos, null)
     checkVictory()
 }
+
+
 
 
 
@@ -93,7 +102,8 @@ function shiftAlien(board, i, j) {
     } else {
         if (board[i][j].gameObject === null) updateCell({ i: i, j: j }, ALIEN)
         else if (board[i][j].gameObject === LASER) {
-            handleAlienHit(gGame.laserPos)
+            // handleAlienHit(gGame.laserPos)
+            // updateCell({ i: i, j: j }, ALIEN)
         }
     }
 }
@@ -107,6 +117,8 @@ function moveAliens() {
     var prevDirection
 
     gIntervalAliens = setInterval(() => {
+        if (gIsAlienFreeze || gHero.isShoot) return
+        gAliensAreMidMove = true
         if (currDirection === 1) {
             currDirection = shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
             updateEdgemostAliensIdxes()
@@ -120,19 +132,12 @@ function moveAliens() {
             updateEdgemostAliensIdxes()
             prevDirection = 1
         }
+        gAliensAreMidMove = false
     }, ALIEN_SPEED)
 
 }
 
 
-function freezeAliens() {
-    gIsAlienFreeze = true
-    var tempInterval = gIntervalAliens
-    clearInterval(gIntervalAliens)
-    //
-    //
-    gIntervalAliens = tempInterval
-}
 
 
 function updateEdgemostAliensIdxes() {
@@ -155,6 +160,33 @@ function updateBottommostAlienIdx() {
     gAliensBottomRowIdx = bottommostIdx
 }
 
+
+function killAlien(pos) {
+    var currHitAlienIdx = getAlienIdx(pos)
+    console.log('gAliens[currHitAlienIdx].pos', gAliens[currHitAlienIdx].pos)
+    gAliens.splice(currHitAlienIdx, 1)
+    updateCell(pos)
+}
+
+// Input example: blowUpNegs(1, 1)
+function blowUpNegs(cellI, cellJ) {
+    // console.log('cellI', cellI)
+    // console.log('cellJ', cellJ)
+
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j >= gBoard[0].length) continue
+
+            var currCell = gBoard[i][j].gameObject
+            if (currCell === ALIEN||currCell===LASER) {
+                killAlien({ i: i, j: j })
+                updateScore(10)
+                gGame.aliensCount--
+            }
+        }
+    }
+}
 
 function getAlienIdx(pos) {
     for (var i = 0; i < gAliens.length; i++) {

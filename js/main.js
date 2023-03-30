@@ -7,6 +7,7 @@ const ALIENS_ROW_COUNT = 3
 const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
+const SUPER_LASER = '^'
 
 const SKY = 'sky'
 const EARTH = 'earth'
@@ -31,12 +32,14 @@ const gGame = {
 
 
 function onInit() {
-    initGameParameters()
+    
     gBoard = createBoard()
     createHero(gBoard)
+    // gHero.superRemain = 3
     createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
     renderBoard(gBoard)
+    initGameParameters()
     moveAliens()
 
     // document.querySelector(".you-win").hidden=false
@@ -48,7 +51,9 @@ function initGameParameters() {
     gGame.heroLives = 3
     gGame.score = 0
     gGame.laserPos = null
+    gIsAlienFreeze = false
     gGame.isOn = true
+    gHero.superRemain = 3
 }
 
 
@@ -67,6 +72,7 @@ function victory() {
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
     gGame.isOn = false
+    gIsAlienFreeze = true
 }
 
 function gamerOver() {
@@ -74,6 +80,7 @@ function gamerOver() {
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
     gGame.isOn = false
+    gIsAlienFreeze = true
 }
 
 //////////////////////////////////////CREATE/////////////////////////////////////
@@ -137,9 +144,6 @@ function checkVictory() {
     if (gGame.aliensCount === 0) victory()
 }
 
-function checkLoss() {
-
-}
 
 
 
