@@ -24,7 +24,8 @@ const gGame = {
 }
 
 
-//TODO: Step4 – Let the aliens move
+//TODO: Make Aliens Freeze Upon Laser Pos Overlapping Alien Pos
+// after finishing the handleAlienHit() function, unfreeze Aliens
 
 
 

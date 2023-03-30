@@ -24,10 +24,9 @@ function onKeyDown(eventKeyboard) {
         const direction = (keyboardKey === 'ArrowRight') ? 1 : -1// can only be left/right
         // console.log('direction', direction)
         moveHero(direction)
-    }else if (keyboardKey === ' ') {
+    } else if (keyboardKey === ' ') {
         shoot()
     }
-
 }
 
 // Move the hero right (1) or left (-1)
@@ -57,20 +56,13 @@ function shoot() {
         // console.log('gGame.laserPos before', gGame.laserPos)
         blinkLaser(gGame.laserPos)
         // console.log('gGame.laserPos after', gGame.laserPos)
-
-
         var currLaseredAlienIdx = getAlienIdx(gGame.laserPos)
-
         if (gGame.laserPos.i < 0) {
             cleanLaser()
         } else if (currLaseredAlienIdx >= 0) {
-            // killAlien(gGame.laserPos, currLaseredAlienIdx)
             handleAlienHit(gGame.laserPos)
-            cleanLaser()
         }
-
     }, LASER_SPEED)
-
 
     // console.log('gAliens.length', gAliens.length)
 }
