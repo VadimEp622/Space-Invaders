@@ -26,6 +26,7 @@ const gGame = {
 
 //TODO: Make Aliens Freeze Upon Laser Pos Overlapping Alien Pos
 // after finishing the handleAlienHit() function, unfreeze Aliens
+//TODO 2: is there a need for handleAlienHit() in both AlienShift() and shoot()? 
 
 
 
