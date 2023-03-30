@@ -1,8 +1,6 @@
 'use strict'
 
 
-
-
 // Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN}
 function createCell(gameObject = null) {
     return {
@@ -11,12 +9,6 @@ function createCell(gameObject = null) {
     }
 }
 
-// Convert a position object {i:i, j:j} to a selector using Class and render a value in that element
-function renderCell(pos, value) {
-    console.log('hi2')
-    var elCell = getElCell(pos)
-    elCell.innerHTML = value
-}
 
 // recieves classStr and item to render, and renders item
 function renderItem(classStr, item) {
@@ -38,6 +30,7 @@ function updateCell(pos, gameObject = null) {
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);
 }
+
 
 //using Keyboard Arrows, find the next position affected
 //return it

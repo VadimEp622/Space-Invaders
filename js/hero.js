@@ -1,13 +1,10 @@
 'use strict'
 
+// const LASER_SPEED = 1//debug tool
 const LASER_SPEED = 80
-// const LASER_SPEED = 1
-
 const SUPER_LASER_SPEED = 30
 
-
 var gHero
-
 var gIntervalLaser
 
 // creates the hero and place it on board
@@ -17,7 +14,7 @@ function createHero(board) {
         isShoot: false,
         isBomb: false,
         isSuper: false,
-        superRemain: null
+        superRemain: 3
     }
     board[gHero.pos.i][gHero.pos.j].gameObject = HERO
 }
@@ -34,15 +31,12 @@ function onKeyDown(eventKeyboard) {
         moveHero(direction)
     } else if (keyboardKey === ' ') {
         shoot()
-        // shoot2()
-
     } else if (keyboardKey === 'n') {
-        shoot()
         gHero.isBomb = true
+        shoot()
     } else if (keyboardKey === 'x') {
         if (gHero.superRemain === 0) return
         gHero.isSuper = true
-        gHero.superRemain--
         console.log('gHero.superRemain', gHero.superRemain)
         shoot()
     }
@@ -64,118 +58,70 @@ function moveHero(dir) {
 }
 
 
+
 // Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
-    if (gHero.isShoot) return
+    if (gHero.isShoot) return//prevents shooting when already shooting
+
     gHero.isShoot = true
     var currLaserSpeed = (gHero.isSuper) ? SUPER_LASER_SPEED : LASER_SPEED
+    if (gHero.isSuper) gHero.superRemain--
 
-    gGame.laserPos = { i: gHero.pos.i, j: gHero.pos.j }
-
-
+    gGame.laserPos = { i: gHero.pos.i + 1, j: gHero.pos.j }
+    var prevLaserPos = gGame.laserPos
+    var currLaserPos = { i: prevLaserPos.i - 1, j: prevLaserPos.j }
+    // console.log('prevLaserPos', prevLaserPos)
+    // console.log('currLaserPos', currLaserPos)
+    // console.log('gGame.laserPos', gGame.laserPos)
+    // console.log('--------------------')
 
     gIntervalLaser = setInterval(() => {
-        if (gAliensAreMidMove) return
         gIsAlienFreeze = true
+        if (gAliensAreMidMove) return
 
-        // console.log('gGame.laserPos before', gGame.laserPos)
-        blinkLaser(gGame.laserPos)
+        prevLaserPos = { i: prevLaserPos.i - 1, j: prevLaserPos.j }
+        currLaserPos = { i: currLaserPos.i - 1, j: currLaserPos.j }
+        gGame.laserPos = currLaserPos
 
-        // blinkLaser2(gGame.laserPos)
+        // console.log('prevLaserPos', prevLaserPos)
+        // console.log('currLaserPos', currLaserPos)
+        // console.log('gGame.laserPos', gGame.laserPos)
+        // console.log('--------------------')
 
-        console.log('gGame.laserPos.i', gGame.laserPos.i)
-        // console.log('gGame.laserPos after', gGame.laserPos)
+        blinkLaser(prevLaserPos)
+        blinkLaser(currLaserPos)
 
         var currLaseredAlienIdx = getAlienIdx(gGame.laserPos)
         if (gGame.laserPos.i < 0) {
+            // When gGame.laserPos.i reaches -1, it traveled outside board,
+            //cleans laser interval and resets global variables for next laser shot
             cleanLaser()
-
         } else if (currLaseredAlienIdx >= 0) {
+            // if gGame.laserPos.i didn't reach -1, AND its laser pos matches with an aliens
             handleAlienHit(gGame.laserPos)
         }
-
+        // debugger
         gIsAlienFreeze = false
     }, currLaserSpeed)
 
     // console.log('gAliens.length', gAliens.length)
 }
+
 // renders a LASER at specific cell for short time and removes it
 function blinkLaser(pos) {
-    var currLaserPos = pos
-    var nextLaserPos = { i: pos.i - 1, j: pos.j }
+    //if current blinked pos.i is -1 prevent updating and exit
+    //Also, if pos.i matches with the hero's pos.i, also exit to prevent overwriting
+    if (pos.i < 0 || pos.i === gBoard[0].length - 2) return
 
-    //Current Laser Position
-    // if (gHero.pos.i !== currLaserPos.i) updateCell(currLaserPos, null)
     if (gBoard[pos.i][pos.j].gameObject === LASER ||
         gBoard[pos.i][pos.j].gameObject === SUPER_LASER) {
-        updateCell(currLaserPos)
-    }
-    // else if(gBoard[pos.i][pos.j].gameObject===ALIEN) updateCell(currLaserPos,ALIEN)
-
-
-    //Next Laser Position
-    gGame.laserPos = nextLaserPos
-    if (nextLaserPos.i < 0) return//prevents updating a cell outside of board
-
-    if (gHero.isSuper) updateCell(nextLaserPos, SUPER_LASER)
-    else updateCell(nextLaserPos, LASER)
-}
-
-
-// Sets an interval for shutting (blinking) the laser up towards aliens
-function shoot2() {
-    if (gHero.isShoot) return
-    gHero.isShoot = true
-
-    gGame.laserPos = { i: gHero.pos.i - 1, j: gHero.pos.j }
-
-    var currLaserPos = gGame.laserPos
-    var nextLaserPos
-
-
-
-    gIntervalLaser = setInterval(() => {
-        if (gAliensAreMidMove) return
-        gIsAlienFreeze = true
-
-        currLaserPos = { i: --currLaserPos.i, j: currLaserPos.j }
-        nextLaserPos = { i: --currLaserPos.i, j: currLaserPos.j }
-
-        console.log('gGame.laserPos', gGame.laserPos)
-        console.log('currLaserPos', currLaserPos)
-        console.log('nextLaserPos', nextLaserPos)
-
-        blinkLaser2(currLaserPos)
-        blinkLaser2(nextLaserPos)
-
-
-        var currLaseredAlienIdx = getAlienIdx(gGame.laserPos)
-        if (gGame.laserPos.i < 0) {
-            cleanLaser()
-
-        } else if (currLaseredAlienIdx >= 0) {
-            handleAlienHit(gGame.laserPos)
-        }
-
-
-        gIsAlienFreeze = false
-    }, LASER_SPEED)
-
-    // console.log('gAliens.length', gAliens.length)
-}
-
-
-// renders a LASER at specific cell for short time and removes it
-function blinkLaser2(pos) {
-
-
-    if (gBoard[pos.i][pos.j].gameObject === HERO) { }
-    else if (gBoard[pos.i][pos.j].gameObject === LASER) {
         updateCell(pos)
-    } else {
-        updateCell(pos, LASER)
+    } else if (gBoard[pos.i][pos.j].gameObject === null) {
+        if (gHero.isSuper) updateCell(pos, SUPER_LASER)
+        else updateCell(pos, LASER)
     }
 
+    // console.log('gBoard[pos.i][pos.j].gameObject', gBoard[pos.i][pos.j].gameObject)
 }
 
 

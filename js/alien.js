@@ -33,27 +33,43 @@ function createAliens(board) {
     // console.log('gAliens', gAliens)
 }
 
+
 function handleAlienHit(pos) {
     if (gHero.isBomb) {
         blowUpNegs(pos.i, pos.j)
     } else {
-        updateScore(10)
-        gGame.aliensCount--
-
-        // console.log('pos Alien Hit', pos)
-        // var currHitAlienIdx = getAlienIdx(pos)
-        // console.log('gAliens.length before', gAliens.length)
-        // gAliens.splice(currHitAlienIdx, 1)
-        // console.log('gAliens.length after', gAliens.length)
-        // updateCell(pos)
-
         killAlien(pos)
     }
     cleanLaser()
     checkVictory()
 }
+//Kills alien in current position, removes from gAliens, removes from board, and from DOM
+//then updates kill score and count
+function killAlien(pos) {
+    updateScore(10)
+    gGame.aliensCount--
+    var currHitAlienIdx = getAlienIdx(pos)
+    console.log('gAliens[currHitAlienIdx].pos', gAliens[currHitAlienIdx].pos)
+    gAliens.splice(currHitAlienIdx, 1)
+    updateCell(pos)
+}
+// Input example: blowUpNegs(1, 1)
+function blowUpNegs(cellI, cellJ) {
+    // console.log('cellI', cellI)
+    // console.log('cellJ', cellJ)
 
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j >= gBoard[0].length) continue
 
+            var currCell = gBoard[i][j].gameObject
+            if (currCell === ALIEN || currCell === LASER) {
+                killAlien({ i: i, j: j })
+            }
+        }
+    }
+}
 
 
 
@@ -97,13 +113,18 @@ function shiftAliens(board, fromI, toI) {
 }
 function shiftAlien(board, i, j) {
     var currAlienIdx = getAlienIdx({ i: i, j: j })
+
     if (currAlienIdx < 0) {
+        //if there aren't any aliens, in current func input i,j pos, in gAliens, meaning they are dead or moved,so
+        //we updae modal and dom with null 
         if (board[i][j].gameObject === ALIEN) updateCell({ i: i, j: j })
     } else {
-        if (board[i][j].gameObject === null) updateCell({ i: i, j: j }, ALIEN)
-        else if (board[i][j].gameObject === LASER) {
-            // handleAlienHit(gGame.laserPos)
-            // updateCell({ i: i, j: j }, ALIEN)
+        if (board[i][j].gameObject === null ||
+            board[i][j].gameObject === LASER ||
+            board[i][j].gameObject === SUPER_LASER) {
+            //null-> alien that passed gAliens inclusion test, gets rendered in an empty cell
+            //laser-> If laser passes by the cell which is being run through for next alien pos
+            updateCell({ i: i, j: j }, ALIEN)
         }
     }
 }
@@ -117,7 +138,10 @@ function moveAliens() {
     var prevDirection
 
     gIntervalAliens = setInterval(() => {
-        if (gIsAlienFreeze || gHero.isShoot) return
+        // if (gIsAlienFreeze || gHero.isShoot) return// freezes aliens completely when shooting
+
+        if (gIsAlienFreeze) return
+
         gAliensAreMidMove = true
         if (currDirection === 1) {
             currDirection = shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
@@ -158,34 +182,6 @@ function updateBottommostAlienIdx() {
         if (gAliens[i].pos.i > bottommostIdx) bottommostIdx = gAliens[i].pos.i
     }
     gAliensBottomRowIdx = bottommostIdx
-}
-
-
-function killAlien(pos) {
-    var currHitAlienIdx = getAlienIdx(pos)
-    console.log('gAliens[currHitAlienIdx].pos', gAliens[currHitAlienIdx].pos)
-    gAliens.splice(currHitAlienIdx, 1)
-    updateCell(pos)
-}
-
-// Input example: blowUpNegs(1, 1)
-function blowUpNegs(cellI, cellJ) {
-    // console.log('cellI', cellI)
-    // console.log('cellJ', cellJ)
-
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= gBoard.length) continue
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (j < 0 || j >= gBoard[0].length) continue
-
-            var currCell = gBoard[i][j].gameObject
-            if (currCell === ALIEN||currCell===LASER) {
-                killAlien({ i: i, j: j })
-                updateScore(10)
-                gGame.aliensCount--
-            }
-        }
-    }
 }
 
 function getAlienIdx(pos) {

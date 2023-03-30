@@ -32,14 +32,13 @@ const gGame = {
 
 
 function onInit() {
-    
+    initGameParameters()
     gBoard = createBoard()
     createHero(gBoard)
-    // gHero.superRemain = 3
     createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
     renderBoard(gBoard)
-    initGameParameters()
+
     moveAliens()
 
     // document.querySelector(".you-win").hidden=false
@@ -53,7 +52,6 @@ function initGameParameters() {
     gGame.laserPos = null
     gIsAlienFreeze = false
     gGame.isOn = true
-    gHero.superRemain = 3
 }
 
 
@@ -62,25 +60,28 @@ function initGameParameters() {
 function restart() {
     if (!document.querySelector(".you-win").hidden) document.querySelector(".you-win").hidden = true
     if (!document.querySelector(".you-lose").hidden) document.querySelector(".you-lose").hidden = true
-    clearInterval(gIntervalLaser)
-    clearInterval(gIntervalAliens)
+    gameEnd()
+    gGame.score=0
+    updateScore(0)
     onInit()
 }
 
 function victory() {
     document.querySelector(".you-win").hidden = false
-    clearInterval(gIntervalLaser)
-    clearInterval(gIntervalAliens)
-    gGame.isOn = false
-    gIsAlienFreeze = true
+    gameEnd()
 }
 
 function gamerOver() {
     document.querySelector(".you-lose").hidden = false
+    gameEnd()
+}
+
+
+function gameEnd(){
+    gGame.isOn = false
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
-    gGame.isOn = false
-    gIsAlienFreeze = true
+    gIsAlienFreeze = true 
 }
 
 //////////////////////////////////////CREATE/////////////////////////////////////
