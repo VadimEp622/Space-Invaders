@@ -10,6 +10,7 @@ var gIntervalAliens
 
 var gAliensTopRowIdx
 var gAliensBottomRowIdx
+
 var gAliensLeftColIdx
 var gAliensRightColIdx
 
@@ -40,7 +41,7 @@ function createAliens(board) {
 function handleAlienHit(pos) {
     updateScore(10)
     gGame.aliensCount--
-    
+
     var currHitAlienIdx = getAlienIdx(pos)
     console.log('gAliens.length before', gAliens.length)
     gAliens.splice(currHitAlienIdx, 1)
@@ -52,8 +53,27 @@ function handleAlienHit(pos) {
 
 
 function shiftBoardRight(board, fromI, toI) {
+    var rightmostColIdx = -1
+    for (var i = 0; i < gAliens.length; i++) {
+        gAliens[i].pos.j++
+        if (rightmostColIdx < gAliens[i].pos.j) rightmostColIdx = gAliens[i].pos.j
+    }
+    console.log('rightmostColIdx', rightmostColIdx)
 
+    for (var i = fromI; i <= toI; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            var currAlienIdx = getAlienIdx({ i: i, j: j })
+            if (currAlienIdx < 0) {
+                if (board[i][j].gameObject === ALIEN) updateCell({ i: i, j: j })
+            } else {
+                if (board[i][j].gameObject === null) updateCell({ i: i, j: j }, ALIEN)
+                // else if(board[i][j].gameObject ===LASER){}
+            }
+        }
+    }
 
+    if (rightmostColIdx === board[0].length - 1) return false//If reached edge
+    return true//If NOT reached edge
 }
 function shiftBoardLeft(board, fromI, toI) { }
 function shiftBoardDown(board, fromI, toI) { }
@@ -62,11 +82,12 @@ function shiftBoardDown(board, fromI, toI) { }
 // it re-renders the board every time
 // when the aliens are reaching the hero row - interval stops
 function moveAliens() {
-    // gIntervalAliens = setInterval(() => {
-    //     console.log('hi')
-    // }, ALIEN_SPEED)
-
-
+    
+    gIntervalAliens = setInterval(() => {
+        var keepMoving = shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+        updateEdgemostAliensIdxes()
+        if(!keepMoving) clearInterval(gIntervalAliens)
+    }, ALIEN_SPEED)
 }
 
 
@@ -75,6 +96,13 @@ function freezeAliens() {
     clearInterval(gIntervalAliens)
 }
 
+
+function updateEdgemostAliensIdxes() {
+    // updateLeftmostAlienIdx()
+    // updateRightmostAlienIdx()
+    updateTopmostAlienColIdx()
+    updateBottommostAlienIdx()
+}
 
 function updateLeftmostAlienIdx() {
     var leftmostIdx = gAliensLeftColIdx
@@ -110,3 +138,9 @@ function updateBottommostAlienIdx() {
 }
 
 
+function getAlienIdx(pos) {
+    for (var i = 0; i < gAliens.length; i++) {
+        if (gAliens[i].pos.i === pos.i && gAliens[i].pos.j === pos.j) return i
+    }
+    return -1
+}
