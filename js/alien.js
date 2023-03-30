@@ -101,7 +101,7 @@ function shiftBoardDown(board, fromI, toI) {
         // console.log('gAliens[i].pos.i', gAliens[i].pos.i)
     }
     shiftAliens(board, fromI, toI)
-    if (buttommostRowIdx === board.length - 2) gamerOver()// If reach EARTH
+    if (buttommostRowIdx === board.length - 2) gameOver()// If reach EARTH
 }
 
 function shiftAliens(board, fromI, toI) {
@@ -121,9 +121,11 @@ function shiftAlien(board, i, j) {
     } else {
         if (board[i][j].gameObject === null ||
             board[i][j].gameObject === LASER ||
-            board[i][j].gameObject === SUPER_LASER) {
+            board[i][j].gameObject === SUPER_LASER||
+            board[i][j].gameObject === HERO) {
             //null-> alien that passed gAliens inclusion test, gets rendered in an empty cell
             //laser-> If laser passes by the cell which is being run through for next alien pos
+            //hero-> if aliens reachd earth, swallow the Hero that touches an alien
             updateCell({ i: i, j: j }, ALIEN)
         }
     }
@@ -136,6 +138,7 @@ function shiftAlien(board, i, j) {
 function moveAliens() {
     var currDirection = 1// -1=left, 0=down, 1,=right
     var prevDirection
+
 
     gIntervalAliens = setInterval(() => {
         // if (gIsAlienFreeze || gHero.isShoot) return// freezes aliens completely when shooting

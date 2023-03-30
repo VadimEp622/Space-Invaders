@@ -76,7 +76,7 @@ function shoot() {
     // console.log('--------------------')
 
     gIntervalLaser = setInterval(() => {
-        gIsAlienFreeze = true
+        // gIsAlienFreeze = true
         if (gAliensAreMidMove) return
 
         prevLaserPos = { i: prevLaserPos.i - 1, j: prevLaserPos.j }
@@ -101,7 +101,7 @@ function shoot() {
             handleAlienHit(gGame.laserPos)
         }
         // debugger
-        gIsAlienFreeze = false
+        // gIsAlienFreeze = false
     }, currLaserSpeed)
 
     // console.log('gAliens.length', gAliens.length)
@@ -117,13 +117,28 @@ function blinkLaser(pos) {
         gBoard[pos.i][pos.j].gameObject === SUPER_LASER) {
         updateCell(pos)
     } else if (gBoard[pos.i][pos.j].gameObject === null) {
-        if (gHero.isSuper) updateCell(pos, SUPER_LASER)
-        else updateCell(pos, LASER)
+        // if (gHero.isSuper) updateCell(pos, SUPER_LASER)
+        // else updateCell(pos, LASER)
+        updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
+    } else if (gBoard[pos.i][pos.j].gameObject === CANDY) {
+        updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
+        handleCandyHit()
     }
 
     // console.log('gBoard[pos.i][pos.j].gameObject', gBoard[pos.i][pos.j].gameObject)
 }
 
+
+function handleCandyHit() {
+    updateScore(50)
+    gIsAlienFreeze = true
+    setTimeout(() => { gIsAlienFreeze = false }, 5000)
+}
+
+//when alien laser/rock? hits hero, call this function
+//then after remove lives with gGame.heroLives--,
+//and check loss with checkLoss() function.
+// function handleAlienHit(){}
 
 function cleanLaser() {
     clearInterval(gIntervalLaser)

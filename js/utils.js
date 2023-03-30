@@ -26,6 +26,27 @@ function updateCell(pos, gameObject = null) {
 
 
 
+//get empty cells from board
+//return array of indexes with [{i:i,j:j},{i:i,j:j},...] of empty cells
+function getEmptyCellsPosArr(board) {
+    var posArray = []
+    for (var i = 0; i < 1; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            if (board[i][j].gameObject === null) posArray.push({ i: i, j: j })
+        }
+    }
+    return posArray
+}
+
+//find an empty cell in board, and return its position like this {i,j}, or undefined(falsy)
+function getRandomTopmostEmptyCellPos(board) {
+    var emptyPosArray = getEmptyCellsPosArr(board)
+    // console.log('emptyPosArray.length', emptyPosArray.length)
+    if (emptyPosArray.length === 0) return null
+
+    return emptyPosArray[getRandomIntInclusive(0, emptyPosArray.length - 1)]
+}
+
 
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);
@@ -56,3 +77,9 @@ function getNextLocation(keyboardKey) {
     return nextPosition
 }
 
+//return num between min max, including both
+function getRandomIntInclusive(min, max) {
+    max = Math.floor(max)
+    min = Math.ceil(min)
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}

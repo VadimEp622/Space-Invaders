@@ -8,11 +8,13 @@ const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
 const SUPER_LASER = '^'
+const CANDY = '🍬'
 
 const SKY = 'sky'
 const EARTH = 'earth'
 
 const SCORE_CLASS = '.score span'
+const LIVES_CLASS = '.lives span'
 
 
 var gBoard
@@ -22,6 +24,7 @@ const gGame = {
     heroLives: null,
     laserPos: null,
     score: null,
+    intervalCandy: null,
 }
 
 
@@ -37,10 +40,11 @@ function onInit() {
     createHero(gBoard)
     createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
+    renderItem(LIVES_CLASS, gGame.heroLives)
     renderBoard(gBoard)
 
     moveAliens()
-
+    fillCandies()
     // document.querySelector(".you-win").hidden=false
     // document.querySelector(".you-lose").hidden=false
 }
@@ -55,13 +59,25 @@ function initGameParameters() {
 }
 
 
+function fillCandies() {
+    gGame.intervalCandy = setInterval(() => {
+        var emptyPos = getRandomTopmostEmptyCellPos(gBoard)
+        if (!emptyPos) return
+        console.log('emptyPos', emptyPos)
+        updateCell(emptyPos, CANDY)
+        setTimeout(() => {
+            updateCell(emptyPos)
+        }, 5000)
+    }, 10000)
+}
+
 
 
 function restart() {
     if (!document.querySelector(".you-win").hidden) document.querySelector(".you-win").hidden = true
     if (!document.querySelector(".you-lose").hidden) document.querySelector(".you-lose").hidden = true
     gameEnd()
-    gGame.score=0
+    gGame.score = 0
     updateScore(0)
     onInit()
 }
@@ -71,17 +87,18 @@ function victory() {
     gameEnd()
 }
 
-function gamerOver() {
+function gameOver() {
     document.querySelector(".you-lose").hidden = false
     gameEnd()
 }
 
 
-function gameEnd(){
+function gameEnd() {
     gGame.isOn = false
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
-    gIsAlienFreeze = true 
+    clearInterval(gGame.intervalCandy)
+    gIsAlienFreeze = true
 }
 
 //////////////////////////////////////CREATE/////////////////////////////////////
@@ -143,6 +160,10 @@ function updateScore(value) {
 //////////////////////////////////CHECK////////////////////////////////////
 function checkVictory() {
     if (gGame.aliensCount === 0) victory()
+}
+
+function checkLoss() {
+    if (gGame.heroLives === 0) gameOver
 }
 
 
