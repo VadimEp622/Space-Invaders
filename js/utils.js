@@ -1,6 +1,6 @@
 'use strict'
 
-
+///////////////////////////////////////////////////////CREATE////////////////////////////////////////////////
 // Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN}
 function createCell(gameObject = null) {
     return {
@@ -10,13 +10,15 @@ function createCell(gameObject = null) {
 }
 
 
+//////////////////////////////////RENDER////////////////////////////////////////////////
 // recieves classStr and item to render, and renders item
 function renderItem(classStr, item) {
-    var elClass = document.querySelector(`${classStr}`)
+    var elClass = document.querySelector(`.${classStr}`)
     elClass.innerHTML = item
 }
 
 
+/////////////////////////////////////UPDATE->MODAL+DOM RENDER///////////////////////////
 // position such as: {i: 2, j: 7}
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
@@ -24,8 +26,46 @@ function updateCell(pos, gameObject = null) {
     elCell.innerHTML = gameObject || ''
 }
 
+function updateCellContentClass(pos, gameObjectClass,id='') {
+    var elCell = getElCell(pos)
+    if (elCell.classList.contains(`${gameObjectClass}`)) elCell.classList.remove(`${gameObjectClass}`)
+    else elCell.classList.add(`${gameObjectClass}`)
+}
 
 
+// function updateCellAlienIdClass(pos, alienClass, id = '') {
+//     var elCell = getElCell(pos)
+
+// }
+
+
+// function updateCellAlienColor(aliens, currAlienId) {
+//     var posObject = { i: aliens[alienIdx].pos.i, j: aliens[alienIdx].pos.j }
+//     var elCell = getElCell(posObject)
+//     elCell.style.backgroundColor = aliens[alienIdx].color 
+// }
+
+// function removeCellAlienColor(pos) {
+//     var elCell = getElCell(pos)
+//     elCell.style.backgroundColor=''
+// }
+
+////////////////////////////////////TOGGLE///////////////////////////////////////////
+// function toggleAlienClass(gameObject){
+//     if (gameObject === ALIEN) {
+//         elCell.classList.add(ALIEN_CLASS)
+//     } else {
+//         if (elCell.classList.includes(ALIEN_CLASS)) {
+//             elCell.classList.remove(ALIEN_CLASS)
+//         }
+//     }
+// }
+
+
+
+
+
+//////////////////////////////////////GET STUFF/////////////////////////////////////
 //get empty cells from board
 //return array of indexes with [{i:i,j:j},{i:i,j:j},...] of empty cells
 function getEmptyCellsPosArr(board) {
@@ -82,4 +122,15 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max)
     min = Math.ceil(min)
     return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+
+//get a Random Color format #000000
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'
+    var color = '#'
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)]
+    }
+    return color
 }

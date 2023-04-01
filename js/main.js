@@ -7,14 +7,20 @@ const ALIENS_ROW_COUNT = 3
 const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
+const BOMB = '💣'
+const ROCK = '🥚'
 const SUPER_LASER = '^'
 const CANDY = '🍬'
 
 const SKY = 'sky'
 const EARTH = 'earth'
 
-const SCORE_CLASS = '.score span'
-const LIVES_CLASS = '.lives span'
+const SCORE_CLASS = 'score span'
+const LIVES_CLASS = 'lives span'
+const ALIEN_CLASS = 'alien'
+const HERO_CLASS = 'hero'
+const WIN_CLASS = 'you-win'
+const LOSE_CLASS = 'you-lose'
 
 
 var gBoard
@@ -23,6 +29,7 @@ const gGame = {
     aliensCount: null,
     heroLives: null,
     laserPos: null,
+    rockPos: null,
     score: null,
     intervalCandy: null,
 }
@@ -37,13 +44,12 @@ const gGame = {
 function onInit() {
     initGameParameters()
     gBoard = createBoard()
-    createHero(gBoard)
-    createAliens(gBoard)
     renderItem(SCORE_CLASS, gGame.score)
     renderItem(LIVES_CLASS, gGame.heroLives)
     renderBoard(gBoard)
 
     moveAliens()
+    makeAliensShoot()
     fillCandies()
     // document.querySelector(".you-win").hidden=false
     // document.querySelector(".you-lose").hidden=false
@@ -74,8 +80,8 @@ function fillCandies() {
 
 
 function restart() {
-    if (!document.querySelector(".you-win").hidden) document.querySelector(".you-win").hidden = true
-    if (!document.querySelector(".you-lose").hidden) document.querySelector(".you-lose").hidden = true
+    if (!document.querySelector(`.${WIN_CLASS}`).hidden) document.querySelector(`.${WIN_CLASS}`).hidden = true
+    if (!document.querySelector(`.${LOSE_CLASS}`).hidden) document.querySelector(`.${LOSE_CLASS}`).hidden = true
     gameEnd()
     gGame.score = 0
     updateScore(0)
@@ -83,12 +89,12 @@ function restart() {
 }
 
 function victory() {
-    document.querySelector(".you-win").hidden = false
+    document.querySelector(`.${WIN_CLASS}`).hidden = false
     gameEnd()
 }
 
 function gameOver() {
-    document.querySelector(".you-lose").hidden = false
+    document.querySelector(`.${LOSE_CLASS}`).hidden = false
     gameEnd()
 }
 
@@ -97,9 +103,15 @@ function gameEnd() {
     gGame.isOn = false
     clearInterval(gIntervalLaser)
     clearInterval(gIntervalAliens)
+    clearInterval(gIntervalAliensShoot)
+    clearInterval(gIntervalRock)
     clearInterval(gGame.intervalCandy)
     gIsAlienFreeze = true
 }
+
+
+
+
 
 //////////////////////////////////////CREATE/////////////////////////////////////
 // Create and returns the board with aliens on top, ground at bottom
@@ -111,9 +123,10 @@ function createBoard() {
         for (var j = 0; j < BOARD_SIZE; j++) {
             board[i][j] = createCell()
             if (i === BOARD_SIZE - 1) board[i][j].type = EARTH
-            // if (i === 0) board[i][j].gameObject = ALIEN
         }
     }
+    createHero(board)
+    createAliens(board)
     return board
 
 }
@@ -129,10 +142,13 @@ function renderBoard(board) {
         strHTML += '<tr>\n'
         for (var j = 0; j < board[0].length; j++) {
             var cellContent = (board[i][j].gameObject) ? board[i][j].gameObject : ''
+            var cellContentClass = ''
+            if (board[i][j].gameObject === ALIEN) cellContentClass = ALIEN_CLASS
+            else if (board[i][j].gameObject === HERO) cellContentClass = HERO_CLASS
             var cellTypeClass = (board[i][j].type === SKY) ? SKY : EARTH
 
             strHTML += `\t<td 
-            class="cell ${cellTypeClass}" 
+            class="cell ${cellTypeClass} ${cellContentClass}" 
             data-i=${i} data-j=${j}
             >
             ${cellContent}
@@ -163,7 +179,7 @@ function checkVictory() {
 }
 
 function checkLoss() {
-    if (gGame.heroLives === 0) gameOver
+    if (gGame.heroLives === 0) gameOver()
 }
 
 

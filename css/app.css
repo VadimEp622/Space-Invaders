@@ -36,7 +36,7 @@ h1{
 
 
 /*  */
-/*  */
+/* BOARD TYPE\CONTENT */
 .sky {
     background-color: rgb(43, 37, 37);
 }
@@ -44,11 +44,19 @@ h1{
 .earth {
     background-color: red;
 }
+.alien{
+    background-color: purple;
+    /* color: transparent;   */
+    /* text-shadow: 0 0 0 green; */
+}
+.hero{
+    color: white;
+}
 
 
 
 /*  */
-/*  */
+/* BUTTONS */
 .restart {
     background-color: rgb(169, 222, 222);
     border: none;
@@ -65,7 +73,7 @@ h1{
 
 
 /*  */
-/*  */
+/* BOARD */
 
 table {
     /*puts table in middle*/
@@ -88,7 +96,7 @@ td {
 }
 
 /*  */
-/*  */
+/* GAME OVER */
 .you-win {
     color: green;
 }
@@ -96,3 +104,13 @@ td {
 .you-lose {
     color: red;
 }
+
+
+
+/*  */
+/*  */
+/* color aliens */
+/* .alien {
+    color: transparent;  
+    text-shadow: 0 0 0 red;
+  } */
