@@ -19,7 +19,7 @@ const SCORE_CLASS = 'score span'
 const LIVES_CLASS = 'lives span'
 const ALIEN_CLASS = 'alien'
 const HERO_CLASS = 'hero'
-const SHIELD_CLASS= 'shield'
+const SHIELD_CLASS = 'shield'
 const WIN_CLASS = 'you-win'
 const LOSE_CLASS = 'you-lose'
 
@@ -33,6 +33,7 @@ const gGame = {
     rockPos: null,
     score: null,
     intervalCandy: null,
+    timeoutCandy: null,
 }
 
 
@@ -78,9 +79,7 @@ function fillCandies() {
         if (!emptyPos) return
         // console.log('emptyPos', emptyPos)
         updateCell(emptyPos, CANDY)
-        setTimeout(() => {
-            updateCell(emptyPos)
-        }, 5000)
+        gGame.timeoutCandy = setTimeout(() => { updateCell(emptyPos) }, 5000)
     }, 10000)
 }
 
@@ -113,6 +112,9 @@ function gameEnd() {
     clearInterval(gIntervalAliens)
     clearInterval(gIntervalAliensShoot)
     clearInterval(gIntervalRock)
+    clearTimeout(gCandyHitAlienFreezeTimeout)
+    clearTimeout(gShieldTimeout)
+    clearTimeout(gGame.timeoutCandy)
 }
 
 

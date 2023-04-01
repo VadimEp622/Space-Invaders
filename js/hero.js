@@ -8,9 +8,11 @@ const SHIELD_TIME = 5000
 
 var gHero
 var gIntervalLaser
-
 // var gSuperLaserIntervals = []
 
+
+var gCandyHitAlienFreezeTimeout
+var gShieldTimeout
 
 ////////////////////////////////////CREATE///////////////////////////////////
 // creates the hero and place it on board
@@ -46,7 +48,7 @@ function moveHero(dir) {
     updateCell(nextPos, HERO)
     updateCellContentClass(nextPos, HERO_CLASS)
 
-    if(gHero.isShield)  {
+    if (gHero.isShield) {
         updateCellContentClass(currPos, SHIELD_CLASS)
         updateCellContentClass(nextPos, SHIELD_CLASS)
     }
@@ -96,18 +98,17 @@ function handleAlienHit(pos) {
 }
 
 
-
 function handleCandyHit() {
     updateScore(50)
     gIsAlienFreeze = true
-    setTimeout(() => { gIsAlienFreeze = false }, 5000)
+    gCandyHitAlienFreezeTimeout = setTimeout(() => { gIsAlienFreeze = false }, 5000)
 }
 
 //When alien's laser/rock(?) hits hero, call this function,
 //then inside remove lives with gGame.heroLives--,
 //and check loss with checkLoss() function.
 function handleHeroHit() {
-    if(gHero.isShield) return
+    if (gHero.isShield) return
     gGame.heroLives--
     renderItem(LIVES_CLASS, gGame.heroLives)
     checkLoss()
@@ -225,8 +226,7 @@ function shieldHero() {
     gHero.isShield = true
     console.log('shield is on')
     updateCellContentClass(gHero.pos, SHIELD_CLASS)
-    setTimeout(() => {
-
+    gShieldTimeout = setTimeout(() => {
         console.log('shield is off')
         updateCellContentClass(gHero.pos, SHIELD_CLASS)
         gHero.isShield = false
