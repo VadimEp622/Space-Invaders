@@ -13,21 +13,30 @@
 
     <h1>Space Invaders</h1>
 
-
     <div>
         <button class="restart" onclick="restart()" onmousedown="event.preventDefault()">Restart</button>
     </div>
 
-    <div class="score">
-        Score: <span></span>
-    </div>
-    <div class="lives">
-        Lives: <span></span>
-    </div>
+    <div class="info-container">
+        <div class="game-data">
+            <div class="score">
+                Score: <span></span>
+            </div>
+            <div class="lives">
+                Lives: <span></span>
+            </div>
+        </div>
 
-    <div class="you-win" hidden>YOU WIN!</div>
-    <div class="you-lose" hidden>YOU LOSE!</div>
+        <div class="keys-info">
+            <div>Z: Shield</div>
+            <div>Space: Normal Attack</div>
+            <div>X: Super Attack</div>
+            <div>N: Bomb Attack</div>
+        </div>
 
+        <div class="you-win" hidden>YOU WIN!</div>
+        <div class="you-lose" hidden>YOU LOSE!</div>
+    </div>
 
     <table class="board">
     </table>

@@ -19,6 +19,7 @@ const SCORE_CLASS = 'score span'
 const LIVES_CLASS = 'lives span'
 const ALIEN_CLASS = 'alien'
 const HERO_CLASS = 'hero'
+const SHIELD_CLASS= 'shield'
 const WIN_CLASS = 'you-win'
 const LOSE_CLASS = 'you-lose'
 

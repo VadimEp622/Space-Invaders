@@ -26,7 +26,7 @@ function updateCell(pos, gameObject = null) {
     elCell.innerHTML = gameObject || ''
 }
 
-function updateCellContentClass(pos, gameObjectClass,id='') {
+function updateCellContentClass(pos, gameObjectClass) {
     var elCell = getElCell(pos)
     if (elCell.classList.contains(`${gameObjectClass}`)) elCell.classList.remove(`${gameObjectClass}`)
     else elCell.classList.add(`${gameObjectClass}`)

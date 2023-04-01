@@ -3,10 +3,13 @@
 // const LASER_SPEED = 1//debug tool
 const LASER_SPEED = 80
 const SUPER_LASER_SPEED = 30
+// const SUPER_LASER_TIME = 3000
+const SHIELD_TIME = 5000
 
 var gHero
 var gIntervalLaser
 
+// var gSuperLaserIntervals = []
 
 
 ////////////////////////////////////CREATE///////////////////////////////////
@@ -17,7 +20,9 @@ function createHero(board) {
         isShoot: false,
         isSuper: false,
         isBomb: false,
-        superRemain: 3
+        superRemain: 3,
+        isShield: false,
+        shieldRemain: 3,
     }
     board[gHero.pos.i][gHero.pos.j].gameObject = HERO
 }
@@ -40,6 +45,11 @@ function moveHero(dir) {
     gHero.pos = nextPos
     updateCell(nextPos, HERO)
     updateCellContentClass(nextPos, HERO_CLASS)
+
+    if(gHero.isShield)  {
+        updateCellContentClass(currPos, SHIELD_CLASS)
+        updateCellContentClass(nextPos, SHIELD_CLASS)
+    }
 }
 
 
@@ -65,6 +75,10 @@ function onKeyDown(eventKeyboard) {
         gHero.isSuper = true
         console.log('gHero.superRemain', gHero.superRemain)
         shoot()
+    } else if (keyboardKey === 'z') {
+        // console.log('shields on')
+        if (gHero.shieldRemain === 0) return
+        shieldHero()
     }
 }
 
@@ -93,6 +107,7 @@ function handleCandyHit() {
 //then inside remove lives with gGame.heroLives--,
 //and check loss with checkLoss() function.
 function handleHeroHit() {
+    if(gHero.isShield) return
     gGame.heroLives--
     renderItem(LIVES_CLASS, gGame.heroLives)
     checkLoss()
@@ -134,16 +149,16 @@ function shoot() {
         prevLaserPos = { i: prevLaserPos.i - 1, j: prevLaserPos.j }
         currLaserPos = { i: currLaserPos.i - 1, j: currLaserPos.j }
         gGame.laserPos = currLaserPos
-        
+
         // console.log('prevLaserPos', prevLaserPos)
         // console.log('currLaserPos', currLaserPos)
         // console.log('gGame.laserPos', gGame.laserPos)
         // console.log('--------------------')
-        
+
         blinkLaser(prevLaserPos)
         blinkLaser(currLaserPos)
 
-        
+
 
         var currLaseredAlienIdx = getAlienIdx(gGame.laserPos)
         if (gGame.laserPos.i < 0) {
@@ -187,7 +202,7 @@ function blinkLaser(pos) {
         else updateCell(pos, LASER)
         // updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
         handleCandyHit()
-    }else if (gBoard[pos.i][pos.j].gameObject === ROCK) {
+    } else if (gBoard[pos.i][pos.j].gameObject === ROCK) {
         updateCell(pos)
         // handleRockHit()
     }
@@ -196,11 +211,24 @@ function blinkLaser(pos) {
 }
 
 
-
 function cleanLaser() {
     clearInterval(gIntervalLaser)
     gGame.laserPos = null
     gHero.isShoot = false
     gHero.isBomb = false
     gHero.isSuper = false
+}
+
+
+function shieldHero() {
+    if (gHero.isShield) return
+    gHero.isShield = true
+    console.log('shield is on')
+    updateCellContentClass(gHero.pos, SHIELD_CLASS)
+    setTimeout(() => {
+
+        console.log('shield is off')
+        updateCellContentClass(gHero.pos, SHIELD_CLASS)
+        gHero.isShield = false
+    }, SHIELD_TIME)
 }
