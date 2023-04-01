@@ -69,7 +69,7 @@ function fillCandies() {
     gGame.intervalCandy = setInterval(() => {
         var emptyPos = getRandomTopmostEmptyCellPos(gBoard)
         if (!emptyPos) return
-        console.log('emptyPos', emptyPos)
+        // console.log('emptyPos', emptyPos)
         updateCell(emptyPos, CANDY)
         setTimeout(() => {
             updateCell(emptyPos)

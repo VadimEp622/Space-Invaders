@@ -188,7 +188,7 @@ function blinkLaser(pos) {
         else if (gHero.isBomb) updateCell(pos, BOMB)
         else updateCell(pos, LASER)
         // updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
-        handleCandyHit(pos)
+        handleCandyHit()
     }else if (gBoard[pos.i][pos.j].gameObject === ROCK) {
         updateCell(pos)
         // handleRockHit()

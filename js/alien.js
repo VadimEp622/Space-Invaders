@@ -302,7 +302,8 @@ function blinkRock(pos) {
         gBoard[pos.i][pos.j].gameObject === ALIEN) return
     else if (gBoard[pos.i][pos.j].gameObject === ROCK ||
         gBoard[pos.i][pos.j].gameObject === LASER ||
-        gBoard[pos.i][pos.j].gameObject === SUPER_LASER) {
+        gBoard[pos.i][pos.j].gameObject === SUPER_LASER ||
+        gBoard[pos.i][pos.j].gameObject === BOMB) {
         updateCell(pos)
     } else if (gBoard[pos.i][pos.j].gameObject === null) {
         updateCell(pos, ROCK)
