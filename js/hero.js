@@ -129,7 +129,6 @@ function shoot() {
     // console.log('--------------------')
 
     gIntervalLaser = setInterval(() => {
-        // gIsAlienFreeze = true
         if (gAliensAreMidMove) return
 
         prevLaserPos = { i: prevLaserPos.i - 1, j: prevLaserPos.j }
@@ -161,7 +160,6 @@ function shoot() {
             handleRockHit()
         }
         // debugger
-        // gIsAlienFreeze = false
     }, currLaserSpeed)
 
     // console.log('gAliens.length', gAliens.length)

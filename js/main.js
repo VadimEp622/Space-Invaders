@@ -8,8 +8,8 @@ const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
 const BOMB = '💣'
-const ROCK = '🥚'
 const SUPER_LASER = '^'
+const ROCK = '🥚'
 const CANDY = '🍬'
 
 const SKY = 'sky'
@@ -60,7 +60,13 @@ function initGameParameters() {
     gGame.heroLives = 3
     gGame.score = 0
     gGame.laserPos = null
+    gGame.rockPos = null
+
     gIsAlienFreeze = false
+    gAliensAreMidMove = false
+    gIsAlienFreeToShoot = true
+    gIsAlienShoot = false
+
     gGame.isOn = true
 }
 
@@ -102,11 +108,10 @@ function gameOver() {
 function gameEnd() {
     gGame.isOn = false
     clearInterval(gIntervalLaser)
+    clearInterval(gGame.intervalCandy)
     clearInterval(gIntervalAliens)
     clearInterval(gIntervalAliensShoot)
     clearInterval(gIntervalRock)
-    clearInterval(gGame.intervalCandy)
-    gIsAlienFreeze = true
 }
 
 

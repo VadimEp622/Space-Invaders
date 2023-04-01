@@ -4,27 +4,25 @@ const ALIEN_MOVE_SPEED = 1000
 const ALIEN_SHOOT_COOLDOWN = 1000
 const ROCK_SPEED = 160
 
+var gAliens
+// var gAlienIdx = 1
+
+
 var gIntervalAliens
 var gIntervalAliensShoot
 var gIntervalRock
 
-// The following two variables represent the part of the matrix (some rows)
-// that we should shift (left, right, and bottom)
-// We need to update those when:
-// (1) shifting down and (2) last alien was cleared from row
 
 var gAliensTopRowIdx
 var gAliensBottomRowIdx
 
 
-var gAliens
-// var gAlienIdx = 1
+var gIsAlienFreeze 
+var gAliensAreMidMove
 
-var gIsAlienFreeze = true
-var gAliensAreMidMove = false
 
-var gIsAlienFreeToShoot = true
-var gIsAlienShoot = false
+var gIsAlienFreeToShoot
+var gIsAlienShoot 
 
 
 
