@@ -56,6 +56,26 @@ function renderBoard(board) {
     // console.log('strHTML\n', strHTML)
     elBoard.innerHTML = strHTML
 }
+function renderBoard(mat, selector) {
+    var strHTML = '<table border="0"><tbody>'
+    for (var i = 0; i < mat.length; i++) {
+        strHTML += '<tr>'
+        for (var j = 0; j < mat[0].length; j++) {
+            const cell = mat[i][j]
+            const className = `cell cell-${i}-${j}`
+
+            strHTML += `<td class="${className}">${cell}</td>`
+        }
+        strHTML += '</tr>'
+    }
+    strHTML += '</tbody></table>'
+
+    const elContainer = document.querySelector(selector)
+    elContainer.innerHTML = strHTML
+}
+
+
+
 // Convert a position object {i:i, j:j} to a selector using Class and render a value in that element
 function renderCell(pos, value) {
     var cellSelector = '.' + getClassName(pos)
@@ -247,7 +267,9 @@ function getClassName(pos) {
 }
 
 
-
+function getItemHTML(itemColor, itemName) {
+    return `<span style="background-color:${itemColor}">${itemName}</span>`
+}
 
 
 

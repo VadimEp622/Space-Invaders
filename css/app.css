@@ -15,6 +15,7 @@ button {
     margin-bottom: 20px;
     /* border: none; */
 }
+
 button:hover {
     cursor: pointer;
 }
@@ -30,8 +31,8 @@ h1,
 }
 
 .cell {
-    font-size: 20px;
-    font-weight: var(--font-weight);
+    font-size: calc(var(--font-size) - 5px);
+    font-weight: var(--font-weight) * 22px;
 }
 
 
@@ -40,17 +41,22 @@ h1,
 .sky {
     background-color: rgb(43, 37, 37);
 }
+
 .earth {
     background-color: red;
 }
+
 .alien {
     background-color: purple;
     /* color: transparent;   */
     /* text-shadow: 0 0 0 green; */
 }
-.hero {
+
+.hero,
+.laser {
     color: white;
 }
+
 .shield {
     background-color: aqua;
 }
@@ -75,25 +81,29 @@ h1,
 
 /*  */
 /* INFO CONTAINER */
-.info-container{
+.info-container {
     height: 120px;
-} 
+}
+
 .keys-info {
     text-align: left;
     position: absolute;
 }
-.game-data{
+
+.game-data {
     position: absolute;
     text-align: left;
     right: 55px;
 }
+
 .you-win {
     color: green;
     bottom: 0px;
 }
+
 .you-lose {
     color: red;
-   /* bottom: 15px; */
+    /* bottom: 15px; */
 }
 
 
@@ -110,6 +120,7 @@ table {
     border-collapse: collapse;
     background-color: gray;
 }
+
 table,
 tr,
 td {

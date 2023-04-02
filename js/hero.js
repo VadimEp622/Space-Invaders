@@ -191,21 +191,20 @@ function blinkLaser(pos) {
         gBoard[pos.i][pos.j].gameObject === SUPER_LASER ||
         gBoard[pos.i][pos.j].gameObject === BOMB) {
         updateCell(pos)
+        // updateCellContentClass(pos, LASER_CLASS)
     } else if (gBoard[pos.i][pos.j].gameObject === null) {
         if (gHero.isSuper) updateCell(pos, SUPER_LASER)
         else if (gHero.isBomb) updateCell(pos, BOMB)
         else updateCell(pos, LASER)
-
-        // updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
+        // updateCellContentClass(pos, LASER_CLASS)
     } else if (gBoard[pos.i][pos.j].gameObject === CANDY) {
         if (gHero.isSuper) updateCell(pos, SUPER_LASER)
         else if (gHero.isBomb) updateCell(pos, BOMB)
         else updateCell(pos, LASER)
-        // updateCell(pos, (gHero.isSuper) ? SUPER_LASER : LASER)
+        // updateCellContentClass(pos, CANDY_CLASS)
         handleCandyHit()
     } else if (gBoard[pos.i][pos.j].gameObject === ROCK) {
         updateCell(pos)
-        // handleRockHit()
     }
 
     // console.log('gBoard[pos.i][pos.j].gameObject', gBoard[pos.i][pos.j].gameObject)

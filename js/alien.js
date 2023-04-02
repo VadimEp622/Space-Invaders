@@ -17,12 +17,12 @@ var gAliensTopRowIdx
 var gAliensBottomRowIdx
 
 
-var gIsAlienFreeze 
+var gIsAlienFreeze
 var gAliensAreMidMove
 
 
 var gIsAlienFreeToShoot
-var gIsAlienShoot 
+var gIsAlienShoot
 
 
 
@@ -128,7 +128,6 @@ function shiftAliens(board, fromI, toI) {
 function shiftAlien(board, i, j) {
     var currPosOnBoard = { i: i, j: j }
     var currAlienIdx = getAlienIdx(currPosOnBoard)
-    // var currAlienId = getAlienId(currPosOnBoard)
 
     if (currAlienIdx < 0) {
         //if there aren't any aliens, in current func input i,j pos, in gAliens, meaning they are dead or moved,so
@@ -136,8 +135,6 @@ function shiftAlien(board, i, j) {
         if (board[i][j].gameObject === ALIEN) {
             updateCell(currPosOnBoard)
             updateCellContentClass(currPosOnBoard, ALIEN_CLASS)
-
-            // removeCellAlienColor(currPosOnBoard)
         }
     } else {
         if (board[i][j].gameObject === null ||
@@ -153,7 +150,6 @@ function shiftAlien(board, i, j) {
             updateCell(currPosOnBoard, ALIEN)
             updateCellContentClass(currPosOnBoard, ALIEN_CLASS)
 
-            // updateCellAlienColor(gAliens, currAlienId)
         }
     }
 }
@@ -192,9 +188,16 @@ function blowUpNegs(cellI, cellJ) {
             if (currCell === ALIEN || currCell === BOMB) {
                 killAlien(currCellPos)
             }
-            else if (currCell === ROCK) {
-                updateCell(currCellPos, ROCK)
-            }
+            if (gGame.rockPos) {
+                if (gGame.rockPos.i === i && gGame.rockPos.j === j) {
+                    updateCell(currCellPos, ROCK)
+                }
+                else updateCell(currCellPos)
+            } 
+            // else if (currCell === ROCK) {
+            //     updateCell(currCellPos, ROCK)
+            //     // updateCell(currCellPos)
+            // }
         }
     }
 }
@@ -231,11 +234,11 @@ function getAlienIdx(pos) {
     return -1
 }
 
-// function getAlienId(pos) {
+// function getAlien(pos) {
 //     for (var i = 0; i < gAliens.length; i++) {
-//         if (gAliens[i].pos.i === pos.i && gAliens[i].pos.j === pos.j) return gAliens[i].id
+//         if (gAliens[i].pos.i === pos.i && gAliens[i].pos.j === pos.j) return gAliens[i]
 //     }
-//     return -1
+//     return null
 // }
 
 

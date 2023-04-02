@@ -20,6 +20,8 @@ const LIVES_CLASS = 'lives span'
 const ALIEN_CLASS = 'alien'
 const HERO_CLASS = 'hero'
 const SHIELD_CLASS = 'shield'
+const LASER_CLASS = 'laser'
+const CANDY_CLASS = 'candy'
 const WIN_CLASS = 'you-win'
 const LOSE_CLASS = 'you-lose'
 
@@ -65,6 +67,8 @@ function initGameParameters() {
     gGame.rockPos = null
 
     gIsAlienFreeze = false
+    // gIsAlienFreeze = true
+
     gAliensAreMidMove = false
     gIsAlienFreeToShoot = true
     gIsAlienShoot = false
@@ -79,7 +83,11 @@ function fillCandies() {
         if (!emptyPos) return
         // console.log('emptyPos', emptyPos)
         updateCell(emptyPos, CANDY)
-        gGame.timeoutCandy = setTimeout(() => { updateCell(emptyPos) }, 5000)
+        // updateCellContentClass(emptyPos, CANDY_CLASS)
+        gGame.timeoutCandy = setTimeout(() => { 
+            updateCell(emptyPos) 
+            // updateCellContentClass(emptyPos, CANDY_CLASS)
+        }, 5000)
     }, 10000)
 }
 
@@ -151,16 +159,21 @@ function renderBoard(board) {
         for (var j = 0; j < board[0].length; j++) {
             var cellContent = (board[i][j].gameObject) ? board[i][j].gameObject : ''
             var cellContentClass = ''
-            if (board[i][j].gameObject === ALIEN) cellContentClass = ALIEN_CLASS
-            else if (board[i][j].gameObject === HERO) cellContentClass = HERO_CLASS
             var cellTypeClass = (board[i][j].type === SKY) ? SKY : EARTH
 
+            if (board[i][j].gameObject === ALIEN) {
+                cellContentClass = `${ALIEN_CLASS}`
+            }
+            else if (board[i][j].gameObject === HERO) cellContentClass = HERO_CLASS
+
+
             strHTML += `\t<td 
-            class="cell ${cellTypeClass} ${cellContentClass}" 
+            class="cell ${cellTypeClass} ${cellContentClass}"
             data-i=${i} data-j=${j}
             >
             ${cellContent}
             \n`
+
 
             strHTML += '\t</td>\n'
         }

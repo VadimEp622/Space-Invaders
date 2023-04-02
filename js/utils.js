@@ -17,10 +17,17 @@ function renderItem(classStr, item) {
     elClass.innerHTML = item
 }
 
+// Convert a position object {i:i, j:j} to a selector using Class and render a value in that element
+function renderCell(pos, value) {
+    var cellSelector = '.' + getClassName(pos)
+    var elCell = document.querySelector(cellSelector)
+    elCell.innerHTML = value
+}
+
 
 /////////////////////////////////////UPDATE->MODAL+DOM RENDER///////////////////////////
 // position such as: {i: 2, j: 7}
-function updateCell(pos, gameObject = null) {
+function updateCell(pos, gameObject = null, gameObjectClass = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)
     elCell.innerHTML = gameObject || ''
@@ -33,10 +40,13 @@ function updateCellContentClass(pos, gameObjectClass) {
 }
 
 
-// function updateCellAlienIdClass(pos, alienClass, id = '') {
+// function updateCellTextShadow(pos, color = null) {
 //     var elCell = getElCell(pos)
-
+//     if (!color) elCell.style.removeProperty('text-shadow')
+//     else elCell.style.textShadow = `0 0 0 ${color}`
 // }
+
+
 
 
 // function updateCellAlienColor(aliens, currAlienId) {
@@ -87,6 +97,9 @@ function getRandomTopmostEmptyCellPos(board) {
     return emptyPosArray[getRandomIntInclusive(0, emptyPosArray.length - 1)]
 }
 
+// function getItemHTML(itemColor, itemName) {
+//     return `<span style="background-color:${itemColor}">${itemName}</span>`
+// }
 
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);
